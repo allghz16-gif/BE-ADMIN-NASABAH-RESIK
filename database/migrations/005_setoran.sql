@@ -1,0 +1,21 @@
+CREATE TABLE setoran (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  nasabah_id INT UNSIGNED NOT NULL,
+  status ENUM('verifikasi', 'berhasil', 'ditolak') NOT NULL DEFAULT 'verifikasi',
+  sumber ENUM('app', 'admin') NOT NULL DEFAULT 'app',
+  total_berat DECIMAL(10,2) NOT NULL DEFAULT 0,
+  total_nilai DECIMAL(15,2) NOT NULL DEFAULT 0,
+  total_poin INT UNSIGNED NOT NULL DEFAULT 0,
+  bukti_timbangan VARCHAR(255) NULL,
+  catatan TEXT NULL,
+  alasan_tolak VARCHAR(255) NULL,
+  diverifikasi_oleh INT UNSIGNED NULL,
+  diverifikasi_at DATETIME NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY idx_setoran_nasabah (nasabah_id),
+  KEY idx_setoran_status (status),
+  KEY idx_setoran_created (created_at),
+  CONSTRAINT fk_setoran_nasabah FOREIGN KEY (nasabah_id) REFERENCES nasabah(id) ON DELETE RESTRICT,
+  CONSTRAINT fk_setoran_verifikator FOREIGN KEY (diverifikasi_oleh) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
